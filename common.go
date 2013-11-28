@@ -70,7 +70,6 @@ func GeomPtr(id C.dGeomID) *Body {
 	return (*Geom)((*C.struct_dxGeom)(id))
 }
 
-
 func (this *Joint) CID() C.dJointID {
 	return (C.dJointID)((*C.struct_dxJoint)(this))
 }
@@ -97,6 +96,7 @@ const (
 )
 
 type JontType C.dJointType
+
 const (
 	JointType_None      JontType = C.dJointTypeNone /* or "unknown" */
 	JointType_Ball      JontType = C.dJointTypeBall
