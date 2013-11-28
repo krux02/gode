@@ -19,13 +19,6 @@ type Matrix4 C.dMatrix4
 type Matrix6 C.dMatrix6
 type Quaternion C.dQuaternion
 
-// type World C.dWorldID
-// type Space C.dSpaceID
-// type Body C.dBodyID
-// type Geom C.dGeomID
-// type Joint C.dJointID
-// type JointGroup C.dJointGroupID
-
 type World C.struct_dxWorld
 type Space C.struct_dxSpace
 type Body C.struct_dxBody

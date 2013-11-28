@@ -1317,7 +1317,7 @@ func (b *Body) SetMovedCallback(callback func(*Body)) {
 
 var movedCallbacks [C.dBodyID]func(b Body)
 
-//export moveCallback
+//export movedCallback
 func movedCallback(b C.dBodyID) {
 	callbacks[b](b)
 }
@@ -1860,13 +1860,19 @@ func (j *Joint) GetBody(index int) *Body {
  * much force an individual joint exerts.
  * @ingroup joints
  */
-ODE_API void dJointSetFeedback (dJointID, dJointFeedback *);
+func (j *Joint) SetFeedback(fb JointFeedback) {
+	panic("SetFeedback not implemented yet")
+	//ODE_API void dJointSetFeedback (dJointID, dJointFeedback *);
+}
 
 /**
  * @brief Gets the datastructure that is to receive the feedback.
  * @ingroup joints
  */
-ODE_API dJointFeedback *dJointGetFeedback (dJointID);
+func (j *Joint) GetFeedback() JointFeedback {
+	panic("GetFeedback not implemented yet")
+	//ODE_API dJointFeedback *dJointGetFeedback (dJointID);
+}
 
 /**
  * @brief Set the joint anchor point.
@@ -2314,7 +2320,10 @@ func (j *Joint) SetPUAxisP(x,y,z Real) {
    * @note parameterX where X equal 3 refer to parameter for prismatic
    *       articulation
    */
-  ODE_API void dJointSetPUParam (dJointID, int parameter, dReal value);
+
+func (j *Joint) SetPUParam(parameter int, value Real) {
+	C.dJointSetPUParam(j.CID(), C.int(parameter), C.dReal(value))
+}
 
   /**
    * @brief Applies the torque about the rotoide axis of the PU joint
@@ -2324,16 +2333,17 @@ func (j *Joint) SetPUAxisP(x,y,z Real) {
    * direction to body 2. This function is just a wrapper for dBodyAddTorque()}
    * @ingroup joints
    */
-  ODE_API void dJointAddPUTorque (dJointID j, dReal torque);
-
-
-
+func (j *Joint) AddPUTorque(torque Real) {
+	C.dJointAddPUTorque(j.CID(), C.dReal(torque))
+}
 
   /**
    * @brief set the joint anchor
    * @ingroup joints
    */
-  ODE_API void dJointSetPistonAnchor (dJointID, dReal x, dReal y, dReal z);
+func (j *Joint) SetPistonAnchor(x,y,z Real) {
+	C.dJointSetPistonAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+}
 
   /**
    * @brief Set the Piston anchor as if the 2 bodies were already at [dx,dy, dz] appart.
@@ -2364,35 +2374,25 @@ func (j *Joint) SetPUAxisP(x,y,z Real) {
    * @param dx A delta to be substracted to the Z position as if the anchor was set
    *           when body1 was at current_position[Z] - dz
    */
-  ODE_API void dJointSetPistonAnchorOffset(dJointID j, dReal x, dReal y, dReal z,
-                                           dReal dx, dReal dy, dReal dz);
-
+func (j *Joint) SetPistonAnchorOffset(x,y,z, dx, dy, dz Real) {
+	C.dJointSetPistonAnchorOffset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z),
+	                                       C.dReal(dx), C.dReal(dy), C.dReal(dz))
+}
     /**
      * @brief set the joint axis
    * @ingroup joints
    */
-  ODE_API void dJointSetPistonAxis (dJointID, dReal x, dReal y, dReal z);
-
-  /**
-   * This function set prismatic axis of the joint and also set the position
-   * of the joint.
-   *
-   * @ingroup joints
-   * @param j The joint affected by this function
-   * @param x The x component of the axis
-   * @param y The y component of the axis
-   * @param z The z component of the axis
-   * @param dx The Initial position of the prismatic join in the x direction
-   * @param dy The Initial position of the prismatic join in the y direction
-   * @param dz The Initial position of the prismatic join in the z direction
-   */
-  ODE_API_DEPRECATED ODE_API void dJointSetPistonAxisDelta (dJointID j, dReal x, dReal y, dReal z, dReal ax, dReal ay, dReal az);
+func (j *Joint) SetPistonAxis()  {
+  	C.dJointSetPistonAxis(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+}
 
   /**
    * @brief set joint parameter
    * @ingroup joints
    */
-  ODE_API void dJointSetPistonParam (dJointID, int parameter, dReal value);
+func (j *Joint) SetPistonParam() {
+  	C.dJointSetPistonParam(j.CID(), C.int(parameter), C.dReal(value))
+}
 
   /**
    * @brief Applies the given force in the slider's direction.
@@ -2402,7 +2402,9 @@ func (j *Joint) SetPUAxisP(x,y,z Real) {
    * direction to body2.  This function is just a wrapper for dBodyAddForce().
    * @ingroup joints
    */
-  ODE_API void dJointAddPistonForce (dJointID joint, dReal force);
+func (j *Joint) AddPistonForce() {
+  	C.dJointAddPistonForce(j.CID(), C.dReal(force))
+}
 
 
 /**
@@ -2411,28 +2413,36 @@ func (j *Joint) SetPUAxisP(x,y,z Real) {
  * rotation between the bodies.
  * @ingroup joints
  */
-ODE_API void dJointSetFixed (dJointID);
+func (j *Joint) SetFixed() {
+	C.dJointSetFixed(j.CID())
+}
 
 /*
  * @brief Sets joint parameter
  *
  * @ingroup joints
  */
-ODE_API void dJointSetFixedParam (dJointID, int parameter, dReal value);
+func (j *Joint) SetFixedParam(parameter int, value Real) {
+	C.dJointSetFixedParam(j.CID(), C.int(parameter), C.dReal(value))
+}
 
 /**
  * @brief set the nr of axes
  * @param num 0..3
  * @ingroup joints
  */
-ODE_API void dJointSetAMotorNumAxes (dJointID, int num);
+func (j *Joint) SetAMotorNumAxes(num int) {
+	C.dJointSetAMotorNumAxes(j.CID(), C.int(num))
+}
 
 /**
  * @brief set axis
  * @ingroup joints
  */
-ODE_API void dJointSetAMotorAxis (dJointID, int anum, int rel,
-			  dReal x, dReal y, dReal z);
+func (j *Joint) SetAMotorAxis(anum, rel int, x,y,z Real) {
+	C.dJointSetAMotorAxis(j.CID(), C.int(anum), C.int(rel),
+			  C.dReal(x), C.dReal(y), C.dReal(z))
+}
 
 /**
  * @brief Tell the AMotor what the current angle is along axis anum.
@@ -2443,19 +2453,25 @@ ODE_API void dJointSetAMotorAxis (dJointID, int anum, int rel,
  * but it is not needed for axis motors.
  * @ingroup joints
  */
-ODE_API void dJointSetAMotorAngle (dJointID, int anum, dReal angle);
+func (j *Joint) SetAMotorAngle(anum int, angle Real) {
+	C.dJointSetAMotorAngle(j.CID(), C.int(anum), C.dReal(angle));
+}
 
 /**
  * @brief set joint parameter
  * @ingroup joints
  */
-ODE_API void dJointSetAMotorParam (dJointID, int parameter, dReal value);
+func (j *Joint) SetAMotorParam(dJointID, int parameter, dReal value) {
+	C.dJointSetAMotorParam(j.CID(), C.int(parameter), C.dReal(value))
+}
 
 /**
  * @brief set mode
  * @ingroup joints
  */
-ODE_API void dJointSetAMotorMode (dJointID, int mode);
+func (j *Joint) SetAMotorMode(dJointID, int mode) {
+	C.dJointSetAMotorMode(j.CID(), C.int(mode))
+}
 
 /**
  * @brief Applies torque0 about the AMotor's axis 0, torque1 about the
@@ -2465,14 +2481,20 @@ ODE_API void dJointSetAMotorMode (dJointID, int mode);
  * This function is just a wrapper for dBodyAddTorque().
  * @ingroup joints
  */
-ODE_API void dJointAddAMotorTorques (dJointID, dReal torque1, dReal torque2, dReal torque3);
+
+func (j *Joint) dJointAddAMotorTorques(torque1, torque2, torque3 Real) {
+	C.dJointAddAMotorTorques(j.CID(), C.dReal(torque1), C.dReal(torque2), C.dReal(torque3))
+}
+
 
 /**
  * @brief Set the number of axes that will be controlled by the LMotor.
  * @param num can range from 0 (which effectively deactivates the joint) to 3.
  * @ingroup joints
  */
-ODE_API void dJointSetLMotorNumAxes (dJointID, int num);
+func (j *Joint) dJointSetLMotorNumAxes(num int) {
+	C.dJointSetLMotorNumAxes(j.CID(), C.int(num))
+}
 
 /**
  * @brief Set the AMotor axes.
@@ -2596,7 +2618,7 @@ func (j *Joint) GetHingeAxis() (result Vector3) {
  */
 
 func (j *Joint) GetHingeParam(parameter int) Real {
-	return Real(C.dJointGetHingeParam(j.CID(), int parameter)
+	return Real(C.dJointGetHingeParam(j.CID(), C.int(parameter)))
 }
 
 
@@ -2614,7 +2636,7 @@ func (j *Joint) GetHingeParam(parameter int) Real {
  */
 
 func (j *Joint) GetHingeAngle() Real {
-	return Real(C.dJointGetHingeAngle(j.CID())
+	return Real(C.dJointGetHingeAngle(j.CID()))
 }
 
 
@@ -2624,7 +2646,7 @@ func (j *Joint) GetHingeAngle() Real {
  */
 
 func (j *Joint) GetHingeAngleRate() Real {
-	return Real(C.dJointGetHingeAngleRate(j.CID())
+	return Real(C.dJointGetHingeAngleRate(j.CID()))
 }
 
 
@@ -2641,7 +2663,7 @@ func (j *Joint) GetHingeAngleRate() Real {
  */
 
 func (j *Joint) GetSliderPosition() Real {
-	return Real(C.dJointGetSliderPosition(j.CID())
+	return Real(C.dJointGetSliderPosition(j.CID()))
 }
 
 
@@ -2651,7 +2673,7 @@ func (j *Joint) GetSliderPosition() Real {
  */
 
 func (j *Joint) GetSliderPositionRate() Real {
-	return Real(C.dJointGetSliderPositionRate(j.CID())
+	return Real(C.dJointGetSliderPositionRate(j.CID()))
 }
 
 
@@ -2672,7 +2694,7 @@ func (j *Joint) GetSliderAxis() (result Vector3) {
  */
 
 func (j *Joint) GetSliderParam(parameter int) Real {
-	return Real(C.dJointGetSliderParam(j.CID(), C.int(parameter))
+	return Real(C.dJointGetSliderParam(j.CID(), C.int(parameter)))
 }
 
 
@@ -2728,7 +2750,7 @@ func (j *Joint) GetHinge2Axis2() (result Vector3) {
  */
 
 func (j *Joint) GetHinge2Param(parameter int) Real {
-	return Real(C.dJointGetHinge2Param(j.CID(), C.int(parameter))
+	return Real(C.dJointGetHinge2Param(j.CID(), C.int(parameter)))
 }
 
 
@@ -2738,7 +2760,7 @@ func (j *Joint) GetHinge2Param(parameter int) Real {
  */
 
 func (j *Joint) GetHinge2Angle1() Real {
-	return Real(C.dJointGetHinge2Angle1(j.CID());
+	return Real(C.dJointGetHinge2Angle1(j.CID()))
 }
 
 
@@ -2748,7 +2770,7 @@ func (j *Joint) GetHinge2Angle1() Real {
  */
 
 func (j *Joint) GetHinge2Angle1Rate() Real {
-	return Real(C.dJointGetHinge2Angle1Rate(j.CID());
+	return Real(C.dJointGetHinge2Angle1Rate(j.CID()))
 }
 
 
@@ -2758,7 +2780,7 @@ func (j *Joint) GetHinge2Angle1Rate() Real {
  */
 
 func (j *Joint) GetHinge2Angle2Rate() Real {
-	return Real(C.dJointGetHinge2Angle2Rate(j.CID());
+	return Real(C.dJointGetHinge2Angle2Rate(j.CID()))
 }
 
 
@@ -2963,12 +2985,9 @@ func (j *Joint) GetPRAxis2() (result Vector3) {
  * @ingroup joints
  */
 
-func (j *Joint) GetPRParam() {
-	return Real(C.dJointGetPRParam(j.CID()))
-}
-ODE_API dReal dJointGetPRParam (dJointID, int parameter);
-
-    
+func (j *Joint) GetPRParam(parameter int) {
+	return Real(C.dJointGetPRParam(j.CID(), C.int(parameter)))
+}   
     
   /**
    * @brief Get the joint anchor point, in world coordinates.
@@ -2980,8 +2999,6 @@ ODE_API dReal dJointGetPRParam (dJointID, int parameter);
 func (j *Joint) GetPUAnchor() (result Vector3) {
 	C.dJointGetPUAnchor(j.CID(), (*C.dReal)(&result[0]))
 }
-  
-
   /**
    * @brief Get the PU linear position (i.e. the prismatic's extension)
    *
@@ -2997,7 +3014,6 @@ func (j *Joint) GetPUAnchor() (result Vector3) {
 func (j *Joint) GetPUPosition() {
 	return Real(C.dJointGetPUPosition(j.CID()))
 }
-  ODE_API dReal dJointGetPUPosition (dJointID);
 
   /**
    * @brief Get the PR linear position's time derivative
@@ -3008,7 +3024,6 @@ func (j *Joint) GetPUPosition() {
 func (j *Joint) GetPUPositionRate() {
 	return Real(C.dJointGetPUPositionRate(j.CID()))
 }
-  ODE_API dReal dJointGetPUPositionRate (dJointID);
 
   /**
    * @brief Get the first axis of the universal component of the joint
@@ -3064,13 +3079,18 @@ func (j *Joint) GetPUAxisP() (result Vector3) {
    * @note This function combine dJointGetPUAngle1 and dJointGetPUAngle2 together
    *       and try to avoid redundant calculation
    */
-  ODE_API void dJointGetPUAngles (dJointID, dReal *angle1, dReal *angle2);
+func (j *Joint) GetPUAngles() (angle1, angle2 Real) {
+	var a1,a2 C.dReal
+	C.dJointGetPUAngles(j.CID(), &a1, &a2)
+	angle1 = Real(a1)
+	angle2 = Real(a2)
+	return
+}
 
   /**
    * @brief Get angle
    * @ingroup joints
-   */
-  
+   */ 
 func (j *Joint) GetPUAngle1() {
 	return Real(C.dJointGetPUAngle1(j.CID()))
 }
@@ -3099,7 +3119,7 @@ func (j *Joint) GetPUAngle2() {
    * @ingroup joints
    */ 
 func (j *Joint) GetPUAngle2Rate(parameter int) {
-	return Real(C.dJointGetPUAngle2Rate(j.CID(), C.int(parameter))))
+	return Real(C.dJointGetPUAngle2Rate(j.CID(), C.int(parameter)))
 }
 
   /**
@@ -3342,15 +3362,24 @@ func (j *Joint) GetFixedParam(parameter int) {
  * @ingroup joints
  */
 func (b *Body) ConnectingJoint(b2 *Body) *Joint {
-	return JointPtr(C.dConnectingJoint(b.CID(), b2.CID())
+	return JointPtr(C.dConnectingJoint(b.CID(), b2.CID()))
 }
 
 /**
  * @ingroup joints
  */
 func (b *Body) ConnectingJointList(b2 *Body) (list []*Joint) {
-	return JointPtr(C.dConnectingJoint(b.CID(), b2.CID(), )
-	ODE_API int dConnectingJointList (dBodyID, dBodyID, dJointID*);
+	joints1 := b.GetNumJoints()
+	joints2 := b2.GetNumJoints()
+	var joints int
+	if joints1 < joints2 {
+		joints = joints1
+	} else {
+		joints = joints2
+	}
+	list = make([]*Joint, joints)
+	l := int(C.dConnectingJointList(b.CID(), b2.CID(), (*C.dJointID)(unsafe.Pointer(&list[0]))))
+	list = list[0:l]
 }
 
 
