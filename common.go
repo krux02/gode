@@ -66,7 +66,7 @@ func (this *Geom) CID() C.dGeomID {
 	return (C.dGeomID)((*C.struct_dxGeom)(this))
 }
 
-func GeomPtr(id C.dGeomID) *Body {
+func GeomPtr(id C.dGeomID) *Geom {
 	return (*Geom)((*C.struct_dxGeom)(id))
 }
 
@@ -95,24 +95,24 @@ const (
 	Err_LCP     Error = C.d_ERR_LCP     /* user assertion failed */
 )
 
-type JontType C.dJointType
+type JointType C.dJointType
 
 const (
-	JointType_None      JontType = C.dJointTypeNone /* or "unknown" */
-	JointType_Ball      JontType = C.dJointTypeBall
-	JointType_Hinge     JontType = C.dJointTypeHinge
-	JointType_Slider    JontType = C.dJointTypeSlider
-	JointType_Contact   JontType = C.dJointTypeContact
-	JointType_Universal JontType = C.dJointTypeUniversal
-	JointType_Hinge2    JontType = C.dJointTypeHinge2
-	JointType_Fixed     JontType = C.dJointTypeFixed
-	JointType_Null      JontType = C.dJointTypeNull
-	JointType_AMotor    JontType = C.dJointTypeAMotor
-	JointType_LMotor    JontType = C.dJointTypeLMotor
-	JointType_Plane2D   JontType = C.dJointTypePlane2D
-	JointType_PR        JontType = C.dJointTypePR
-	JointType_PU        JontType = C.dJointTypePU
-	JointType_Piston    JontType = C.dJointTypePiston
+	JointType_None      JointType = C.dJointTypeNone /* or "unknown" */
+	JointType_Ball      JointType = C.dJointTypeBall
+	JointType_Hinge     JointType = C.dJointTypeHinge
+	JointType_Slider    JointType = C.dJointTypeSlider
+	JointType_Contact   JointType = C.dJointTypeContact
+	JointType_Universal JointType = C.dJointTypeUniversal
+	JointType_Hinge2    JointType = C.dJointTypeHinge2
+	JointType_Fixed     JointType = C.dJointTypeFixed
+	JointType_Null      JointType = C.dJointTypeNull
+	JointType_AMotor    JointType = C.dJointTypeAMotor
+	JointType_LMotor    JointType = C.dJointTypeLMotor
+	JointType_Plane2D   JointType = C.dJointTypePlane2D
+	JointType_PR        JointType = C.dJointTypePR
+	JointType_PU        JointType = C.dJointTypePU
+	JointType_Piston    JointType = C.dJointTypePiston
 )
 
 const (

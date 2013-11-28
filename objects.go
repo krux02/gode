@@ -6,6 +6,8 @@ package ode
 */
 import "C"
 
+import "unsafe"
+
 /**
  * @defgroup world World
  *
@@ -353,39 +355,39 @@ func (w *World) SetAutoDisableAngularThreshold(angular_threshold Real) {
  * @ingroup disable
  * @return the threshold
  */
-
-func (w *World) GetAutoDisableLinearAverageThreshold() Real {
-	return Real(C.dWorldGetAutoDisableLinearAverageThreshold(w.CID()))
-}
+// TODO undefined reference
+// func (w *World) GetAutoDisableLinearAverageThreshold() Real {
+// 	return Real(C.dWorldGetAutoDisableLinearAverageThreshold(w.CID()))
+// }
 
 /**
  * @brief Set auto disable linear average threshold for newly created bodies.
  * @param linear_average_threshold default is 0.01
  * @ingroup disable
  */
-
-func (w *World) SetAutoDisableLinearAverageThreshold(linear_average_threshold Real) {
-	C.dWorldSetAutoDisableLinearAverageThreshold(w.CID, C.dReal(linear_average_threshold))
-}
+// TODO undefined reference
+// func (w *World) SetAutoDisableLinearAverageThreshold(linear_average_threshold Real) {
+// 	C.dWorldSetAutoDisableLinearAverageThreshold(w.CID, C.dReal(linear_average_threshold))
+// }
 
 /**
  * @brief Get auto disable angular average threshold for newly created bodies.
  * @ingroup disable
  * @return the threshold
  */
-
-func (w *World) GetAutoDisableAngularAverageThreshold() Real {
-	return Real(C.dWorldGetAutoDisableAngularAverageThreshold(w.CID()))
-}
+// TODO undefined reference
+//func (w *World) GetAutoDisableAngularAverageThreshold() Real {
+//	return Real(C.dWorldGetAutoDisableAngularAverageThreshold(w.CID()))
+//}
 
 /**
  * @brief Set auto disable angular average threshold for newly created bodies.
  * @param linear_average_threshold default is 0.01
  * @ingroup disable
  */
-func (w *World) SetAutoDisableAngularAverageThreshold(angular_average_threshold Real) {
-	C.dWorldSetAutoDisableAngularAverageThreshold(w.CID(), C.dReal(angular_average_threshold))
-}
+//func (w *World) SetAutoDisableAngularAverageThreshold(angular_average_threshold Real) {
+//	C.dWorldSetAutoDisableAngularAverageThreshold(w.CID(), C.dReal(angular_average_threshold))
+//}
 
 /**
  * @brief Get auto disable sample count for newly created bodies.
@@ -421,7 +423,7 @@ func (w *World) GetAutoDisableSteps() bool {
  * @param steps default is 10
  */
 func (w *World) SetAutoDisableSteps(steps int) {
-	dWorldSetAutoDisableSteps(w.CID(), C.int(steps))
+	C.dWorldSetAutoDisableSteps(w.CID(), C.int(steps))
 }
 
 /**
@@ -448,7 +450,7 @@ func (w *World) SetAutoDisableTime(time Real) {
  * @return 0 or 1
  */
 func (w *World) GetAutoDisableFlag() bool {
-	return toBool(GetAutoDisableFlag(w.CID()))
+	return toBool(C.dWorldGetAutoDisableFlag(w.CID()))
 }
 
 /**
@@ -518,7 +520,7 @@ func (w *World) SetLinearDampingThreshold(threshold Real) {
  * @ingroup damping
  */
 func (w *World) GetAngularDampingThreshold() Real {
-	return Real(dWorldGetAngularDampingThreshold(w.CID()))
+	return Real(C.dWorldGetAngularDampingThreshold(w.CID()))
 }
 
 /**
@@ -680,7 +682,7 @@ func (b *Body) GetAutoDisableAverageSamplesCount() int {
  * @param average_samples_count the nr of samples to review.
  */
 func (b *Body) SetAutoDisableAverageSamplesCount(average_samples_count int) {
-	C.dBodySetAutoDisableAverageSamplesCount(b.CID(), C.int(average_samples_count))
+	C.dBodySetAutoDisableAverageSamplesCount(b.CID(), C.uint(average_samples_count))
 }
 
 /**
@@ -716,7 +718,7 @@ func (b *Body) GetAutoDisableTime() Real {
  * @param time nr of seconds.
  */
 func (b *Body) SetAutoDisableTime(time Real) {
-	C.SetAutoDisableTime(b.CID(), C.dReal(time))
+	C.dBodySetAutoDisableTime(b.CID(), C.dReal(time))
 }
 
 /**
@@ -817,8 +819,8 @@ func (b *Body) SetPosition(x, y, z Real) {
  * if the new configuration is inconsistent with the joints/constraints
  * that are present.
  */
-func (b *Body) SetRotation(R *Matrix) {
-	C.dBodySetRotation(b.CID(), (*C.dReal)(R[0]))
+func (b *Body) SetRotation(R *Matrix3) {
+	C.dBodySetRotation(b.CID(), (*C.dReal)(&R[0]))
 }
 
 /**
@@ -830,7 +832,7 @@ func (b *Body) SetRotation(R *Matrix) {
  * that are present.
  */
 func (b *Body) SetQuaternion(q Quaternion) {
-	C.dBodySetQuaternion(b.CID(), (*C.dReal)(q[0]))
+	C.dBodySetQuaternion(b.CID(), (*C.dReal)(&q[0]))
 }
 
 /**
@@ -957,7 +959,7 @@ func (b *Body) GetMass(mass *Mass) {
  * @brief Add force at centre of mass of body in absolute coordinates.
  * @ingroup bodies
  */
-func (b *Body) AddForce(x, y, z Real) {
+func (b *Body) AddForce(fx, fy, fz Real) {
 	C.dBodyAddForce(b.CID(), C.dReal(fx), C.dReal(fy), C.dReal(fz))
 }
 
@@ -965,7 +967,7 @@ func (b *Body) AddForce(x, y, z Real) {
  * @brief Add torque at centre of mass of body in absolute coordinates.
  * @ingroup bodies
  */
-func (b *Body) AddTorque(x, y, z Real) {
+func (b *Body) AddTorque(fx, fy, fz Real) {
 	C.dBodyAddTorque(b.CID(), C.dReal(fx), C.dReal(fy), C.dReal(fz))
 }
 
@@ -973,7 +975,7 @@ func (b *Body) AddTorque(x, y, z Real) {
  * @brief Add force at centre of mass of body in coordinates relative to body.
  * @ingroup bodies
  */
-func (b *Body) AddRelForce(x, y, z Real) {
+func (b *Body) AddRelForce(fx, fy, fz Real) {
 	C.dBodyAddRelForce(b.CID(), C.dReal(fx), C.dReal(fy), C.dReal(fz))
 }
 
@@ -981,7 +983,7 @@ func (b *Body) AddRelForce(x, y, z Real) {
  * @brief Add torque at centre of mass of body in coordinates relative to body.
  * @ingroup bodies
  */
-func (b *Body) AddRelTorque(x, y, z Real) {
+func (b *Body) AddRelTorque(fx, fy, fz Real) {
 	C.dBodyAddRelTorque(b.CID(), C.dReal(fx), C.dReal(fy), C.dReal(fz))
 }
 
@@ -1031,7 +1033,7 @@ func (b *Body) AddRelForceAtRelPos(fx, fy, fz, px, py, pz Real) {
  * @ingroup bodies
  */
 func (b *Body) GetForcePointer() *[3]Real {
-	return (*[3]Real)(C.dBodyGetForce(b.CID()))
+	return (*[3]Real)(unsafe.Pointer(C.dBodyGetForce(b.CID())))
 }
 
 /**
@@ -1043,8 +1045,8 @@ func (b *Body) GetForcePointer() *[3]Real {
  * body system.
  * @ingroup bodies
  */
-func (b *Body) GetTorque() Real {
-	return Real(C.dBodyGetTorque(b.CID()))
+func (b *Body) GetTorque() *[3]Real {
+	return (*[3]Real)(unsafe.Pointer(C.dBodyGetTorque(b.CID())))
 }
 
 /**
@@ -1077,7 +1079,8 @@ func (b *Body) SetTorque(x, y, z Real) {
  * @param result will contain the result.
  */
 func (b *Body) GetRelPointPos(px, py, pz Real) (result Vector3) {
-	C.dBodyGetRelPointPos(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyGetRelPointPos(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1086,7 +1089,8 @@ func (b *Body) GetRelPointPos(px, py, pz Real) (result Vector3) {
  * @param result will contain the result.
  */
 func (b *Body) GetRelPointVel(px, py, pz Real) (result Vector3) {
-	C.dBodyGetRelPointVel(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyGetRelPointVel(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1096,7 +1100,8 @@ func (b *Body) GetRelPointVel(px, py, pz Real) (result Vector3) {
  * @param result will contain the result.
  */
 func (b *Body) GetPointVel(px, py, pz Real) (result Vector3) {
-	C.dBodyGetPointVel(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyGetPointVel(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1108,7 +1113,8 @@ func (b *Body) GetPointVel(px, py, pz Real) (result Vector3) {
  * @param result will contain the result.
  */
 func (b *Body) GetPosRelPoint(px, py, pz Real) (result Vector3) {
-	C.dBodyGetPosRelPoint(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyGetPosRelPoint(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1117,7 +1123,8 @@ func (b *Body) GetPosRelPoint(px, py, pz Real) (result Vector3) {
  * @param result will contain the result.
  */
 func (b *Body) VectorToWorld(px, py, pz Real) (result Vector3) {
-	C.dBodyVectorToWorld(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyVectorToWorld(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1126,7 +1133,8 @@ func (b *Body) VectorToWorld(px, py, pz Real) (result Vector3) {
  * @param result will contain the result.
  */
 func (b *Body) VectorFromWorld(px, py, pz Real) (result Vector3) {
-	C.dBodyVectorFromWorld(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dVector3)(&result[0]))
+	C.dBodyVectorFromWorld(b.CID(), C.dReal(px), C.dReal(py), C.dReal(pz), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -1147,7 +1155,7 @@ func (b *Body) VectorFromWorld(px, py, pz Real) (result Vector3) {
  * sources of error.
  */
 func (b *Body) SetFiniteRotationMode(mode int) {
-	C.dBodySetFiniteRotationMode(b.dBodyID, C.int(mode))
+	C.dBodySetFiniteRotationMode(b.CID(), C.int(mode))
 }
 
 /**
@@ -1239,7 +1247,7 @@ func (b *Body) SetKinematic() {
  * @return 1 if a body is kinematic or 0 if it is dynamic.
  */
 func (b *Body) IsKinematic() bool {
-	return toBool(C.dBodyIsKinematic(dBodyID))
+	return toBool(C.dBodyIsKinematic(b.CID()))
 }
 
 /**
@@ -1305,16 +1313,17 @@ func (b *Body) GetGravityMode() bool {
  * @ingroup bodies
  */
 func (b *Body) SetMovedCallback(callback func(*Body)) {
-	movedCallbacks[b.CID()] = callback
-	C.dBodySetMovedCallback(b.CID(), movedCallback)
+	//movedCallbacks[b.CID()] = callback
+	//C.dBodySetMovedCallback(b.CID(), C.movedCallback)
+	panic("SetMovedCallback not implemented yet")
 }
 
-var movedCallbacks [C.dBodyID]func(b Body)
+// var movedCallbacks [C.dBodyID]func(b Body)
 
-//export movedCallback
-func movedCallback(b C.dBodyID) {
-	callbacks[b](b)
-}
+// //export movedCallback
+// func movedCallback(b C.dBodyID) {
+// 	callbacks[b](b)
+// }
 
 /**
  * @brief Return the first geom associated with the body.
@@ -1414,7 +1423,7 @@ func (b *Body) GetLinearDampingThreshold() Real {
  *      is only applied if the linear speed is above this limit.
  * @ingroup bodies damping
  */
-func (b *Body) SetLinearDampingThreshold() {
+func (b *Body) SetLinearDampingThreshold(threshold Real) {
 	C.dBodySetLinearDampingThreshold(b.CID(), C.dReal(threshold))
 }
 
@@ -1454,7 +1463,7 @@ func (b *Body) GetMaxAngularSpeed() Real {
  * enabled.
  */
 func (b *Body) SetMaxAngularSpeed(max_speed Real) {
-	C.dBodySetMaxAngularSpeed(C.dReal(max_speed))
+	C.dBodySetMaxAngularSpeed(b.CID(), C.dReal(max_speed))
 }
 
 /**
@@ -1465,7 +1474,7 @@ func (b *Body) SetMaxAngularSpeed(max_speed Real) {
  * @ingroup bodies
  */
 func (b *Body) GetGyroscopicMode() bool {
-	return toInt(C.dBodyGetGyroscopicMode(b.CID()))
+	return C.dBodyGetGyroscopicMode(b.CID()) != 0
 }
 
 /**
@@ -1558,7 +1567,7 @@ func (b *Body) SetGyroscopicMode(enabled bool) {
  * If it is nonzero the joint is allocated in the given joint group.
  */
 func (jg *JointGroup) CreateBall(w *World) *Joint {
-	return JointPtr(C.dJointCreateBall(w.CID, jg.CID()))
+	return JointPtr(C.dJointCreateBall(w.CID(), jg.CID()))
 }
 
 /**
@@ -1568,7 +1577,7 @@ func (jg *JointGroup) CreateBall(w *World) *Joint {
  * If it is nonzero the joint is allocated in the given joint group.
  */
 func (jg *JointGroup) CreateHinge(w *World) *Joint {
-	return JointPtr(C.dJointCreateHinge(w.CID, jg.CID()))
+	return JointPtr(C.dJointCreateHinge(w.CID(), jg.CID()))
 }
 
 /**
@@ -1588,7 +1597,7 @@ func (jg *JointGroup) CreateSlider(w *World) *Joint {
  * If it is nonzero the joint is allocated in the given joint group.
  */
 func (jg *JointGroup) CreateContact(w *World, contact *Contact) *Joint {
-	return JointPtr(C.dJointCreateContact(w.CID(), jg.CID, (*C.dContact)(contact)))
+	return JointPtr(C.dJointCreateContact(w.CID(), jg.CID(), (*C.dContact)(contact)))
 }
 
 /**
@@ -1694,7 +1703,7 @@ func (jg *JointGroup) CreatePlane2D(w *World) *Joint {
  * However, if the joint is a member of a group then this function has no
  * effect - to destroy that joint the group must be emptied or destroyed.
  */
-func (j *Jont) Destroy() {
+func (j *Joint) Destroy() {
 	C.dJointDestroy(j.CID())
 }
 
@@ -1703,7 +1712,7 @@ func (j *Jont) Destroy() {
  * @ingroup joints
  * @param max_size deprecated. Set to 0.
  */
-func (jg *JointGroup) CreateJointGroup(max_size int) {
+func (jg *JointGroup) CreateJointGroup(max_size int) *JointGroup {
 	return JointGroupPtr(C.dJointGroupCreate(C.int(max_size)))
 }
 
@@ -1864,7 +1873,7 @@ func (j *Joint) GetFeedback() JointFeedback {
  * together. The input is specified in world coordinates.
  */
 func (j *Joint) SetBallAnchor(x, y, z Real) {
-	C.dJointSetBallAnchor(j.CID, C.dReal(x), C.dReal(y), C.dReal(z))
+	C.dJointSetBallAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
 }
 
 /**
@@ -1872,7 +1881,7 @@ func (j *Joint) SetBallAnchor(x, y, z Real) {
  * @ingroup joints
  */
 func (j *Joint) SetBallAnchor2(x, y, z Real) {
-	C.dJointSetBallAnchor2(j.CID, C.dReal(x), C.dReal(y), C.dReal(z))
+	C.dJointSetBallAnchor2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
 }
 
 /**
@@ -1951,7 +1960,7 @@ func (j *Joint) SetHingeParam(parameter int, value Real) {
  * direction to body 2. This function is just a wrapper for dBodyAddTorque()}
  * @ingroup joints
  */
-func (j *Joint) AddHingeTorque(torque) {
+func (j *Joint) AddHingeTorque(torque Real) {
 	C.dJointAddHingeTorque(j.CID(), C.dReal(torque))
 }
 
@@ -1966,7 +1975,7 @@ func (j *Joint) SetSliderAxis(x, y, z Real) {
 /**
  * @ingroup joints
  */
-func (j *Joint) SetSliderAxisDelta(x, y, z, ax, ay, az) {
+func (j *Joint) SetSliderAxisDelta(x, y, z, ax, ay, az Real) {
 	C.dJointSetSliderAxisDelta(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(ax), C.dReal(ay), C.dReal(az))
 }
 
@@ -2028,7 +2037,7 @@ func (j *Joint) SetHinge2Param(parameter int, value Real) {
  * @remarks  This function is just a wrapper for dBodyAddTorque().
  * @ingroup joints
  */
-func (j *Joint) AddHinge2Torques() {
+func (j *Joint) AddHinge2Torques(torque1, torque2 Real) {
 	C.dJointAddHinge2Torques(j.CID(), C.dReal(torque1), C.dReal(torque2))
 }
 
@@ -2036,7 +2045,7 @@ func (j *Joint) AddHinge2Torques() {
  * @brief set anchor
  * @ingroup joints
  */
-func (j *Joint) SetUniversalAnchor() {
+func (j *Joint) SetUniversalAnchor(x, y, z Real) {
 	C.dJointSetUniversalAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
 }
 
@@ -2044,7 +2053,7 @@ func (j *Joint) SetUniversalAnchor() {
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetUniversalAxis1() {
+func (j *Joint) SetUniversalAxis1(x, y, z Real) {
 	C.dJointSetUniversalAxis1(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
 }
 
@@ -2304,8 +2313,10 @@ func (j *Joint) SetPUParam(parameter int, value Real) {
  * direction to body 2. This function is just a wrapper for dBodyAddTorque()}
  * @ingroup joints
  */
+
 func (j *Joint) AddPUTorque(torque Real) {
-	C.dJointAddPUTorque(j.CID(), C.dReal(torque))
+	panic("linker: undefined reference to dJointAddPUTorque")
+	//C.dJointAddPUTorque(j.CID(), C.dReal(torque))
 }
 
 /**
@@ -2354,7 +2365,7 @@ func (j *Joint) SetPistonAnchorOffset(x, y, z, dx, dy, dz Real) {
     * @brief set the joint axis
   * @ingroup joints
 */
-func (j *Joint) SetPistonAxis() {
+func (j *Joint) SetPistonAxis(x, y, z Real) {
 	C.dJointSetPistonAxis(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
 }
 
@@ -2362,7 +2373,7 @@ func (j *Joint) SetPistonAxis() {
  * @brief set joint parameter
  * @ingroup joints
  */
-func (j *Joint) SetPistonParam() {
+func (j *Joint) SetPistonParam(parameter int, value Real) {
 	C.dJointSetPistonParam(j.CID(), C.int(parameter), C.dReal(value))
 }
 
@@ -2374,7 +2385,7 @@ func (j *Joint) SetPistonParam() {
  * direction to body2.  This function is just a wrapper for dBodyAddForce().
  * @ingroup joints
  */
-func (j *Joint) AddPistonForce() {
+func (j *Joint) AddPistonForce(force Real) {
 	C.dJointAddPistonForce(j.CID(), C.dReal(force))
 }
 
@@ -2432,7 +2443,7 @@ func (j *Joint) SetAMotorAngle(anum int, angle Real) {
  * @brief set joint parameter
  * @ingroup joints
  */
-func (j *Joint) SetAMotorParam(dJointID, int parameter, dReal value) {
+func (j *Joint) SetAMotorParam(parameter int, value Real) {
 	C.dJointSetAMotorParam(j.CID(), C.int(parameter), C.dReal(value))
 }
 
@@ -2440,7 +2451,7 @@ func (j *Joint) SetAMotorParam(dJointID, int parameter, dReal value) {
  * @brief set mode
  * @ingroup joints
  */
-func (j *Joint) SetAMotorMode(dJointID, int mode) {
+func (j *Joint) SetAMotorMode(mode int) {
 	C.dJointSetAMotorMode(j.CID(), C.int(mode))
 }
 
@@ -2518,7 +2529,7 @@ func (j *Joint) SetPlane2DAngleParam(parameter int, value Real) {
  * this will be the same as the point on body 2.
  */
 func (j *Joint) GetBallAnchor() (result Vector3) {
-	C.dJointGetBallAnchor(j.CID(), (*dReal)(&result[0]))
+	C.dJointGetBallAnchor(j.CID(), (*C.dReal)(&result[0]))
 	return
 }
 
@@ -2533,7 +2544,7 @@ func (j *Joint) GetBallAnchor() (result Vector3) {
  * dJointGetBallAnchor(), to see how far the joint has come apart.
  */
 func (j *Joint) GetBallAnchor2() (result Vector3) {
-	C.dJointGetBallAnchor2(j.CID(), (*dReal)(&result[0]))
+	C.dJointGetBallAnchor2(j.CID(), (*C.dReal)(&result[0]))
 	return
 }
 
@@ -2541,7 +2552,7 @@ func (j *Joint) GetBallAnchor2() (result Vector3) {
  * @brief get joint parameter
  * @ingroup joints
  */
-func (j *Joint) GetBallParam() Real {
+func (j *Joint) GetBallParam(parameter int) Real {
 	return Real(C.dJointGetBallParam(j.CID(), C.int(parameter)))
 }
 
@@ -2670,6 +2681,7 @@ func (j *Joint) GetSliderParam(parameter int) Real {
 
 func (j *Joint) GetHinge2Anchor() (result Vector3) {
 	C.dJointGetHinge2Anchor(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2683,6 +2695,7 @@ func (j *Joint) GetHinge2Anchor() (result Vector3) {
 
 func (j *Joint) GetHinge2Anchor2() (result Vector3) {
 	C.dJointGetHinge2Anchor2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2692,6 +2705,7 @@ func (j *Joint) GetHinge2Anchor2() (result Vector3) {
 
 func (j *Joint) GetHinge2Axis1() (result Vector3) {
 	C.dJointGetHinge2Axis1(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2701,6 +2715,7 @@ func (j *Joint) GetHinge2Axis1() (result Vector3) {
 
 func (j *Joint) GetHinge2Axis2() (result Vector3) {
 	C.dJointGetHinge2Axis2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2748,6 +2763,7 @@ func (j *Joint) GetHinge2Angle2Rate() Real {
 
 func (j *Joint) GetUniversalAnchor() (result Vector3) {
 	C.dJointGetUniversalAnchor(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2766,6 +2782,7 @@ func (j *Joint) GetUniversalAnchor() (result Vector3) {
 
 func (j *Joint) GetUniversalAnchor2() (result Vector3) {
 	C.dJointGetUniversalAnchor2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2775,6 +2792,7 @@ func (j *Joint) GetUniversalAnchor2() (result Vector3) {
 
 func (j *Joint) GetUniversalAxis1() (result Vector3) {
 	C.dJointGetUniversalAxis1(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2784,6 +2802,7 @@ func (j *Joint) GetUniversalAxis1() (result Vector3) {
 
 func (j *Joint) GetUniversalAxis2() (result Vector3) {
 	C.dJointGetUniversalAxis2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2920,6 +2939,7 @@ func (j *Joint) GetPRAxis1() (result Vector3) {
 
 func (j *Joint) GetPRAxis2() (result Vector3) {
 	C.dJointGetPRAxis2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2927,7 +2947,7 @@ func (j *Joint) GetPRAxis2() (result Vector3) {
  * @ingroup joints
  */
 
-func (j *Joint) GetPRParam(parameter int) {
+func (j *Joint) GetPRParam(parameter int) Real {
 	return Real(C.dJointGetPRParam(j.CID(), C.int(parameter)))
 }
 
@@ -2940,6 +2960,7 @@ func (j *Joint) GetPRParam(parameter int) {
 
 func (j *Joint) GetPUAnchor() (result Vector3) {
 	C.dJointGetPUAnchor(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2954,7 +2975,7 @@ func (j *Joint) GetPUAnchor() (result Vector3) {
  * @ingroup joints
  */
 
-func (j *Joint) GetPUPosition() {
+func (j *Joint) GetPUPosition() Real {
 	return Real(C.dJointGetPUPosition(j.CID()))
 }
 
@@ -2964,7 +2985,7 @@ func (j *Joint) GetPUPosition() {
  * @ingroup joints
  */
 
-func (j *Joint) GetPUPositionRate() {
+func (j *Joint) GetPUPositionRate() Real {
 	return Real(C.dJointGetPUPositionRate(j.CID()))
 }
 
@@ -2975,6 +2996,7 @@ func (j *Joint) GetPUPositionRate() {
 
 func (j *Joint) GetPUAxis1() (result Vector3) {
 	C.dJointGetPUAxis1(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2984,6 +3006,7 @@ func (j *Joint) GetPUAxis1() (result Vector3) {
 
 func (j *Joint) GetPUAxis2() (result Vector3) {
 	C.dJointGetPUAxis2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -2993,6 +3016,7 @@ func (j *Joint) GetPUAxis2() (result Vector3) {
 
 func (j *Joint) GetPUAxis3() (result Vector3) {
 	C.dJointGetPUAxis3(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3005,6 +3029,7 @@ func (j *Joint) GetPUAxis3() (result Vector3) {
 
 func (j *Joint) GetPUAxisP() (result Vector3) {
 	C.dJointGetPUAxisP(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3030,7 +3055,7 @@ func (j *Joint) GetPUAngles() (angle1, angle2 Real) {
  * @brief Get angle
  * @ingroup joints
  */
-func (j *Joint) GetPUAngle1() {
+func (j *Joint) GetPUAngle1() Real {
 	return Real(C.dJointGetPUAngle1(j.CID()))
 }
 
@@ -3039,7 +3064,7 @@ func (j *Joint) GetPUAngle1() {
  *
  * @ingroup joints
  */
-func (j *Joint) GetPUAngle1Rate() {
+func (j *Joint) GetPUAngle1Rate() Real {
 	return Real(C.dJointGetPUAngle1Rate(j.CID()))
 }
 
@@ -3047,7 +3072,7 @@ func (j *Joint) GetPUAngle1Rate() {
  * @brief Get angle
  * @ingroup joints
  */
-func (j *Joint) GetPUAngle2() {
+func (j *Joint) GetPUAngle2() Real {
 	return Real(C.dJointGetPUAngle2(j.CID()))
 }
 
@@ -3056,8 +3081,8 @@ func (j *Joint) GetPUAngle2() {
  *
  * @ingroup joints
  */
-func (j *Joint) GetPUAngle2Rate(parameter int) {
-	return Real(C.dJointGetPUAngle2Rate(j.CID(), C.int(parameter)))
+func (j *Joint) GetPUAngle2Rate() Real {
+	return Real(C.dJointGetPUAngle2Rate(j.CID()))
 }
 
 /**
@@ -3065,8 +3090,8 @@ func (j *Joint) GetPUAngle2Rate(parameter int) {
  * @ingroup joints
  */
 
-func (j *Joint) GetPUParam(parameter int) {
-	return Real(C.dJointGetPUParam(j.CID(), parameter))
+func (j *Joint) GetPUParam(parameter int) Real {
+	return Real(C.dJointGetPUParam(j.CID(), C.int(parameter)))
 }
 
 /**
@@ -3076,7 +3101,7 @@ func (j *Joint) GetPUParam(parameter int) {
  * examined and that position will be the zero position.
  * @ingroup joints
  */
-func (j *Joint) GetPistonPosition() {
+func (j *Joint) GetPistonPosition() Real {
 	return Real(C.dJointGetPistonPosition(j.CID()))
 }
 
@@ -3084,7 +3109,7 @@ func (j *Joint) GetPistonPosition() {
  * @brief Get the piston linear position's time derivative.
  * @ingroup joints
  */
-func (j *Joint) GetPistonPositionRate() {
+func (j *Joint) GetPistonPositionRate() Real {
 	return Real(C.dJointGetPistonPositionRate(j.CID()))
 }
 
@@ -3095,7 +3120,7 @@ func (j *Joint) GetPistonPositionRate() {
  * examined and that position will be the zero position.
  * @ingroup joints
  */
-func (j *Joint) GetPistonAngle() {
+func (j *Joint) GetPistonAngle() Real {
 	return Real(C.dJointGetPistonAngle(j.CID()))
 }
 
@@ -3103,7 +3128,7 @@ func (j *Joint) GetPistonAngle() {
  * @brief Get the piston angular position's time derivative.
  * @ingroup joints
  */
-func (j *Joint) GetPistonAngleRate() {
+func (j *Joint) GetPistonAngleRate() Real {
 	return Real(C.dJointGetPistonAngleRate(j.CID()))
 }
 
@@ -3119,6 +3144,7 @@ func (j *Joint) GetPistonAngleRate() {
 
 func (j *Joint) GetPistonAnchor() (result Vector3) {
 	C.dJointGetPistonAnchor(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3137,6 +3163,7 @@ func (j *Joint) GetPistonAnchor() (result Vector3) {
 
 func (j *Joint) GetPistonAnchor2() (result Vector3) {
 	C.dJointGetPistonAnchor2(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3146,6 +3173,7 @@ func (j *Joint) GetPistonAnchor2() (result Vector3) {
 
 func (j *Joint) GetPistonAxis() (result Vector3) {
 	C.dJointGetPistonAxis(j.CID(), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3153,8 +3181,8 @@ func (j *Joint) GetPistonAxis() (result Vector3) {
  * @ingroup joints
  */
 
-func (j *Joint) GetPistonParam(parameter int) {
-	return Real(C.dJointGetPistonParam(j.CID(), parameter))
+func (j *Joint) GetPistonParam(parameter int) Real {
+	return Real(C.dJointGetPistonParam(j.CID(), C.int(parameter)))
 }
 
 /**
@@ -3181,6 +3209,7 @@ func (j *Joint) GetMotorNumAxes() int {
 
 func (j *Joint) GetAMotorAxis(anum int) (result Vector3) {
 	C.dJointGetAMotorAxis(j.CID(), C.int(anum), (*C.dReal)(&result[0]))
+	return
 }
 
 /**
@@ -3235,8 +3264,8 @@ func (j *Joint) GetAMotorAngleRate(anum int) Real {
  * @ingroup joints
  */
 
-func (j *Joint) GetAMotorParam(parameter int) {
-	return Real(C.dJointGetAMotorParam(j.CID(), parameter))
+func (j *Joint) GetAMotorParam(parameter int) Real {
+	return Real(C.dJointGetAMotorParam(j.CID(), C.int(parameter)))
 }
 
 /**
@@ -3270,7 +3299,7 @@ func (j *Joint) GetLMotorNumAxes() int {
  * @brief Get axis.
  * @ingroup joints
  */
-func (j *joint) GetLMotorAxis(anum int) (result Vector3) {
+func (j *Joint) GetLMotorAxis(anum int) (result Vector3) {
 	C.dJointGetLMotorAxis(j.CID(), C.int(anum), (*C.dReal)(&result[0]))
 	return
 }
@@ -3280,8 +3309,8 @@ func (j *joint) GetLMotorAxis(anum int) (result Vector3) {
  * @ingroup joints
  */
 
-func (j *Joint) GetLMotorParam(parameter int) {
-	return Real(C.dJointGetLMotorParam(j.CID(), parameter))
+func (j *Joint) GetLMotorParam(parameter int) Real {
+	return Real(C.dJointGetLMotorParam(j.CID(), C.int(parameter)))
 }
 
 /**
@@ -3289,8 +3318,8 @@ func (j *Joint) GetLMotorParam(parameter int) {
  * @ingroup joints
  */
 
-func (j *Joint) GetFixedParam(parameter int) {
-	return Real(C.dJointGetFixedParam(j.CID(), parameter))
+func (j *Joint) GetFixedParam(parameter int) Real {
+	return Real(C.dJointGetFixedParam(j.CID(), C.int(parameter)))
 }
 
 /**
@@ -3315,6 +3344,7 @@ func (b *Body) ConnectingJointList(b2 *Body) (list []*Joint) {
 	list = make([]*Joint, joints)
 	l := int(C.dConnectingJointList(b.CID(), b2.CID(), (*C.dJointID)(unsafe.Pointer(&list[0]))))
 	list = list[0:l]
+	return
 }
 
 /**
@@ -3342,5 +3372,5 @@ func (this *Body) IsConnected(that *Body) bool {
  */
 
 func (this *Body) IsConnectedExcluding(that *Body, joint_type JointType) bool {
-	return toBool(C.dAreConnected(this.CID(), that.CID()), C.int(joint_type))
+	return C.dAreConnectedExcluding(this.CID(), that.CID(), C.int(joint_type)) != 0
 }
