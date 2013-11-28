@@ -2,6 +2,7 @@ package ode
 
 /*
 #cgo linux LDFLAGS: -lode -lstdc++
+#define dDOUBLE
 #include "ode/mass.h"
 */
 import "C"

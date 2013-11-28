@@ -2,6 +2,7 @@ package ode
 
 /*
 #cgo linux LDFLAGS: -lode -lstdc++
+#define dDOUBLE
 #include "ode/objects.h"
 */
 import "C"
@@ -259,9 +260,9 @@ func (w *World) GetContactSurfaceLayer() Real {
  * @param maxiterations The number of iterations to perform.
  * @ingroup world
  */
-func (w *World) StepFast1(stepsize Real, maxiterations int) {
-	C.dWorldStepFast1(w.CID(), C.dReal(stepsize), C.int(maxiterations))
-}
+//func (w *World) StepFast1(stepsize Real, maxiterations int) {
+//	C.dWorldStepFast1(w.CID(), C.dReal(stepsize), C.int(maxiterations))
+//}
 
 /**
  * @defgroup disable Automatic Enabling and Disabling
@@ -299,17 +300,17 @@ func (w *World) StepFast1(stepsize Real, maxiterations int) {
  * @brief Set the AutoEnableDepth parameter used by the StepFast1 algorithm.
  * @ingroup disable
  */
-func (w *World) SetAutoEnableDepthSF1(autoEnableDepth bool) {
-	C.dWorldSetAutoEnableDepthSF1(w.CID(), toCint(autoEnableDepth))
-}
+//func (w *World) SetAutoEnableDepthSF1(autoEnableDepth bool) {
+//	C.dWorldSetAutoEnableDepthSF1(w.CID(), toCint(autoEnableDepth))
+//}
 
 /**
  * @brief Get the AutoEnableDepth parameter used by the StepFast1 algorithm.
  * @ingroup disable
  */
-func (w *World) GetAutoEnableDepthSF1() bool {
-	return toBool(C.dWorldGetAutoEnableDepthSF1(w.CID()))
-}
+//func (w *World) GetAutoEnableDepthSF1() bool {
+//	return toBool(C.dWorldGetAutoEnableDepthSF1(w.CID()))
+//}
 
 /**
  * @brief Get auto disable linear threshold for newly created bodies.
