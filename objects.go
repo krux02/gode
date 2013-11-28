@@ -1575,7 +1575,9 @@ func (b *Body) SetGyroscopicMode(enabled bool) {
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateBall (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateBall(w *World) *Joint {
+	return JointPtr(C.dJointCreateBall(w.CID, jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the hinge type.
@@ -1583,7 +1585,9 @@ ODE_API dJointID dJointCreateBall (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateHinge (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateHinge(w *World) *Joint {
+	return JointPtr(C.dJointCreateHinge(w.CID, jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the slider type.
@@ -1591,7 +1595,9 @@ ODE_API dJointID dJointCreateHinge (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateSlider (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateSlider(w *World) *Joint {
+	return JointPtr(C.dJointCreateSlider(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the contact type.
@@ -1599,7 +1605,9 @@ ODE_API dJointID dJointCreateSlider (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateContact (dWorldID, dJointGroupID, const dContact *);
+func (jg *JointGroup) CreateContact(w *World, contact *Contact) *Joint {
+	return JointPtr(C.dJointCreateContact(w.CID(), jg.CID, (*C.dContact)(contact)))
+}
 
 /**
  * @brief Create a new joint of the hinge2 type.
@@ -1607,7 +1615,9 @@ ODE_API dJointID dJointCreateContact (dWorldID, dJointGroupID, const dContact *)
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateHinge2 (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateHinge2(w *World) *Joint {
+	return JointPtr(C.dJointCreateHinge2(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the universal type.
@@ -1615,7 +1625,9 @@ ODE_API dJointID dJointCreateHinge2 (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateUniversal (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateUniversal(w *World) *Joint {
+	return JointPtr(C.dJointCreateUniversal(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the PR (Prismatic and Rotoide) type.
@@ -1623,7 +1635,9 @@ ODE_API dJointID dJointCreateUniversal (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreatePR (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreatePR(w *World) *Joint {
+	return JointPtr(C.dJointCreatePR(w.CID(), w.CID()))
+}
 
   /**
    * @brief Create a new joint of the PU (Prismatic and Universal) type.
@@ -1631,7 +1645,9 @@ ODE_API dJointID dJointCreatePR (dWorldID, dJointGroupID);
    * @param dJointGroupID set to 0 to allocate the joint normally.
    * If it is nonzero the joint is allocated in the given joint group.
    */
-  ODE_API dJointID dJointCreatePU (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreatePU(w *World) *Joint {
+ 	return JointPtr(C.dJointCreatePU(w.CID(), jg.CID()))
+}
 
   /**
    * @brief Create a new joint of the Piston type.
@@ -1640,7 +1656,9 @@ ODE_API dJointID dJointCreatePR (dWorldID, dJointGroupID);
    *                      If it is nonzero the joint is allocated in the given
    *                      joint group.
    */
-  ODE_API dJointID dJointCreatePiston (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreatePiston(w *World) *Joint {
+ 	return JointPtr(C.dJointCreatePiston(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the fixed type.
@@ -1648,9 +1666,13 @@ ODE_API dJointID dJointCreatePR (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateFixed (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateFixed(w *World) *Joint {
+ 	return JointPtr(C.dJointCreateFixed(w.CID(), jg.CID()))
+}
 
-ODE_API dJointID dJointCreateNull (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateNull(w *World) *Joint {
+ 	return JointPtr(C.dJointCreateNull(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the A-motor type.
@@ -1658,7 +1680,9 @@ ODE_API dJointID dJointCreateNull (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateAMotor (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateAMotor(w *World) *Joint {
+ 	return JointPtr(C.dJointCreateAMotor(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the L-motor type.
@@ -1666,7 +1690,9 @@ ODE_API dJointID dJointCreateAMotor (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreateLMotor (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreateLMotor(w *World) *Joint {
+ 	return JointPtr(C.dJointCreateLMotor(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Create a new joint of the plane-2d type.
@@ -1674,7 +1700,9 @@ ODE_API dJointID dJointCreateLMotor (dWorldID, dJointGroupID);
  * @param dJointGroupID set to 0 to allocate the joint normally.
  * If it is nonzero the joint is allocated in the given joint group.
  */
-ODE_API dJointID dJointCreatePlane2D (dWorldID, dJointGroupID);
+func (jg *JointGroup) CreatePlane2D(w *World) *Joint {
+ 	return JointPtr(C.dJointCreatePlane2D(w.CID(), jg.CID()))
+}
 
 /**
  * @brief Destroy a joint.
@@ -1693,7 +1721,9 @@ func (j *Jont) Destroy() {
  * @ingroup joints
  * @param max_size deprecated. Set to 0.
  */
-ODE_API dJointGroupID dJointGroupCreate (int max_size);
+func (jg *JointGroup) CreateJointGroup(max_size int) {
+	return JointGroupPtr(C.dJointGroupCreate(C.int(max_size)))
+}
 
 /**
  * @brief Destroy a joint group.
@@ -1701,7 +1731,9 @@ ODE_API dJointGroupID dJointGroupCreate (int max_size);
  *
  * All joints in the joint group will be destroyed.
  */
-ODE_API void dJointGroupDestroy (dJointGroupID);
+func (jg *JointGroup) Destroy() {
+	C.dJointGroupDestroy(jg.CID());
+}
 
 /**
  * @brief Empty a joint group.
@@ -1710,7 +1742,9 @@ ODE_API void dJointGroupDestroy (dJointGroupID);
  * All joints in the joint group will be destroyed,
  * but the joint group itself will not be destroyed.
  */
-ODE_API void dJointGroupEmpty (dJointGroupID);
+func (jg *JointGroup) Empty() {
+	C.dJointGroupEmpty(jg.CID());
+}
 
 /**
  * @brief Return the number of bodies attached to the joint
@@ -1802,7 +1836,7 @@ func (j *Joint) GetData() unsafe.Pointer {
  * \li dJointTypePiston
  */
 func (j *Joint) GetType() JointType {
-	reutrn JointType(C.dJointGetType(j.CID()))
+	return JointType(C.dJointGetType(j.CID()))
 }
 
 /**
