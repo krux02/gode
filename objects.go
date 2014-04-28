@@ -51,8 +51,8 @@ func (w *World) Destroy() {
  *
  * @ingroup world
  */
-func (w *World) SetGravity(x, y, z Real) {
-	C.dWorldSetGravity(w.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (w *World) SetGravity(gravity Vector3) {
+	C.dWorldSetGravity(w.CID(), C.dReal(gravity[0]), C.dReal(gravity[1]), C.dReal(gravity[2]))
 }
 
 /**
@@ -808,8 +808,8 @@ func (b *Body) GetData() unsafe.Pointer {
  * that are present.
  * @ingroup bodies
  */
-func (b *Body) SetPosition(x, y, z Real) {
-	C.dBodySetPosition(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetPosition(pos Vector3) {
+	C.dBodySetPosition(b.CID(), C.dReal(pos[0]), C.dReal(pos[1]), C.dReal(pos[2]))
 }
 
 /**
@@ -840,16 +840,16 @@ func (b *Body) SetQuaternion(q Quaternion) {
  * @brief Set the linear velocity of a body.
  * @ingroup bodies
  */
-func (b *Body) SetLinearVel(x, y, z Real) {
-	C.dBodySetLinearVel(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetLinearVel(linVel Vector3) {
+	C.dBodySetLinearVel(b.CID(), C.dReal(linVel[0]), C.dReal(linVel[1]), C.dReal(linVel[2]))
 }
 
 /**
  * @brief Set the angular velocity of a body.
  * @ingroup bodies
  */
-func (b *Body) SetAngularVel(x, y, z Real) {
-	C.dBodySetAngularVel(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetAngularVel(angVel Vector3) {
+	C.dBodySetAngularVel(b.CID(), C.dReal(angVel[0]), C.dReal(angVel[1]), C.dReal(angVel[2]))
 }
 
 /**
@@ -1058,8 +1058,8 @@ func (b *Body) GetTorque() *[3]Real {
  * were called on them while they were deactivated.
  * @ingroup bodies
  */
-func (b *Body) SetForce(x, y, z Real) {
-	C.dBodySetForce(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetForce(force Vector3) {
+	C.dBodySetForce(b.CID(), C.dReal(force[0]), C.dReal(force[1]), C.dReal(force[2]))
 }
 
 /**
@@ -1070,8 +1070,8 @@ func (b *Body) SetForce(x, y, z Real) {
  * were called on them while they were deactivated.
  * @ingroup bodies
  */
-func (b *Body) SetTorque(x, y, z Real) {
-	C.dBodySetTorque(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetTorque(torque Vector3) {
+	C.dBodySetTorque(b.CID(), C.dReal(torque[0]), C.dReal(torque[1]), C.dReal(torque[2]))
 }
 
 /**
@@ -1175,8 +1175,8 @@ func (b *Body) SetFiniteRotationMode(mode int) {
  * you can call this function with the wheel's hinge axis as the argument to
  * try and improve its behavior.
  */
-func (b *Body) SetFiniteRotationAxis(x, y, z Real) {
-	C.dBodySetFiniteRotationAxis(b.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (b *Body) SetFiniteRotationAxis(axis Vector3) {
+	C.dBodySetFiniteRotationAxis(b.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -1873,16 +1873,16 @@ func (j *Joint) GetFeedback() JointFeedback {
  * The joint will try to keep this point on each body
  * together. The input is specified in world coordinates.
  */
-func (j *Joint) SetBallAnchor(x, y, z Real) {
-	C.dJointSetBallAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetBallAnchor(anchor Vector3) {
+	C.dJointSetBallAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
  * @brief Set the joint anchor point.
  * @ingroup joints
  */
-func (j *Joint) SetBallAnchor2(x, y, z Real) {
-	C.dJointSetBallAnchor2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetBallAnchor2(anchor Vector3) {
+	C.dJointSetBallAnchor2(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
@@ -1897,20 +1897,20 @@ func (j *Joint) SetBallParam(parameter int, value Real) {
  * @brief Set hinge anchor parameter.
  * @ingroup joints
  */
-func (j *Joint) SetHingeAnchor(x, y, z Real) {
-	C.dJointSetHingeAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetHingeAnchor(anchor Vector3) {
+	C.dJointSetHingeAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
-func (j *Joint) SetHingeAnchorDelta(x, y, z, ax, ay, az Real) {
-	C.dJointSetHingeAnchorDelta(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(ax), C.dReal(ay), C.dReal(az))
+func (j *Joint) SetHingeAnchorDelta(xyz, axyz Vector3) {
+	C.dJointSetHingeAnchorDelta(j.CID(), C.dReal(xyz[0]), C.dReal(xyz[1]), C.dReal(xyz[2]), C.dReal(axyz[0]), C.dReal(axyz[1]), C.dReal(axyz[2]))
 }
 
 /**
  * @brief Set hinge axis.
  * @ingroup joints
  */
-func (j *Joint) SetHingeAxis(x, y, z Real) {
-	C.dJointSetHingeAxis(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetHingeAxis(axis Vector3) {
+	C.dJointSetHingeAxis(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -1941,8 +1941,8 @@ func (j *Joint) SetHingeAxis(x, y, z Real) {
  * @warning Calling dJointSetHingeAnchor or dJointSetHingeAxis will reset the "zero"
  *          angle position.
  */
-func (j *Joint) SetHingeAxisOffset(x, y, z, angle Real) {
-	C.dJointSetHingeAxisOffset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(angle))
+func (j *Joint) SetHingeAxisOffset(axis Vector3, angle Real) {
+	C.dJointSetHingeAxisOffset(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]), C.dReal(angle))
 }
 
 /**
@@ -1969,15 +1969,15 @@ func (j *Joint) AddHingeTorque(torque Real) {
  * @brief set the joint axis
  * @ingroup joints
  */
-func (j *Joint) SetSliderAxis(x, y, z Real) {
-	C.dJointSetSliderAxis(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetSliderAxis(axis Vector3) {
+	C.dJointSetSliderAxis(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
  * @ingroup joints
  */
-func (j *Joint) SetSliderAxisDelta(x, y, z, ax, ay, az Real) {
-	C.dJointSetSliderAxisDelta(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(ax), C.dReal(ay), C.dReal(az))
+func (j *Joint) SetSliderAxisDelta(xyz, axyz Vector3) {
+	C.dJointSetSliderAxisDelta(j.CID(), C.dReal(xyz[0]), C.dReal(xyz[1]), C.dReal(xyz[2]), C.dReal(axyz[0]), C.dReal(axyz[1]), C.dReal(axyz[2]))
 }
 
 /**
@@ -2004,24 +2004,24 @@ func (j *Joint) AddSliderFore(force Real) {
  * @brief set anchor
  * @ingroup joints
  */
-func (j *Joint) SetHinge2Anchor(x, y, z Real) {
-	C.dJointSetHinge2Anchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetHinge2Anchor(anchor Vector3) {
+	C.dJointSetHinge2Anchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetHinge2Axis1(x, y, z Real) {
-	C.dJointSetHinge2Axis1(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetHinge2Axis1(axis Vector3) {
+	C.dJointSetHinge2Axis1(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetHinge2Axis2(x, y, z Real) {
-	C.dJointSetHinge2Axis2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetHinge2Axis2(axis Vector3) {
+	C.dJointSetHinge2Axis2(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2046,16 +2046,16 @@ func (j *Joint) AddHinge2Torques(torque1, torque2 Real) {
  * @brief set anchor
  * @ingroup joints
  */
-func (j *Joint) SetUniversalAnchor(x, y, z Real) {
-	C.dJointSetUniversalAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetUniversalAnchor(anchor Vector3) {
+	C.dJointSetUniversalAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetUniversalAxis1(x, y, z Real) {
-	C.dJointSetUniversalAxis1(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetUniversalAxis1(axis Vector3) {
+	C.dJointSetUniversalAxis1(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2094,16 +2094,16 @@ func (j *Joint) SetUniversalAxis1(x, y, z Real) {
  *          dJointSetUniversalAxis2, dJointSetUniversalAxis2Offset
  *          will reset the "zero" angle position.
 */
-func (j *Joint) SetUniversalAxis1Offset(x, y, z, offset1, offset2 Real) {
-	C.dJointSetUniversalAxis1Offset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(offset1), C.dReal(offset2))
+func (j *Joint) SetUniversalAxis1Offset(axis Vector3, offset1, offset2 Real) {
+	C.dJointSetUniversalAxis1Offset(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]), C.dReal(offset1), C.dReal(offset2))
 }
 
 /**
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetUniversalAxis2(x, y, z Real) {
-	C.dJointSetUniversalAxis2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetUniversalAxis2(axis Vector3) {
+	C.dJointSetUniversalAxis2(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2143,8 +2143,8 @@ func (j *Joint) SetUniversalAxis2(x, y, z Real) {
  *          will reset the "zero" angle position.
  */
 
-func (j *Joint) SetUniversalAxis2Offset(x, y, z, offset1, offset2 Real) {
-	C.dJointSetUniversalAxis2Offset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z), C.dReal(offset1), C.dReal(offset2))
+func (j *Joint) SetUniversalAxis2Offset(axis Vector3, offset1, offset2 Real) {
+	C.dJointSetUniversalAxis2Offset(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]), C.dReal(offset1), C.dReal(offset2))
 }
 
 /**
@@ -2169,24 +2169,24 @@ func (j *Joint) AddUniversalTorques(torque1, torque2 Real) {
  * @brief set anchor
  * @ingroup joints
  */
-func (j *Joint) SetPRAnchor(x, y, z Real) {
-	C.dJointSetPRAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPRAnchor(anchor Vector3) {
+	C.dJointSetPRAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
  * @brief set the axis for the prismatic articulation
  * @ingroup joints
  */
-func (j *Joint) SetPRAxis1(x, y, z Real) {
-	C.dJointSetPRAxis1(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPRAxis1(axis Vector3) {
+	C.dJointSetPRAxis1(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
  * @brief set the axis for the rotoide articulation
  * @ingroup joints
  */
-func (j *Joint) SetPRAxis2(x, y, z Real) {
-	C.dJointSetPRAxis2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPRAxis2(axis Vector3) {
+	C.dJointSetPRAxis2(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2215,8 +2215,8 @@ func (j *Joint) AddPRTorque(torque Real) {
  * @brief set anchor
  * @ingroup joints
  */
-func (j *Joint) SetPUAnchor(x, y, z Real) {
-	C.dJointSetPUAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPUAnchor(anchor Vector3) {
+	C.dJointSetPUAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
@@ -2249,9 +2249,10 @@ func (j *Joint) SetPUAnchor(x, y, z Real) {
  *           when body1 was at current_position[Z] - dz
  */
 
-func (j *Joint) SetPUAnchorOffset(x, y, z, dx, dy, dz Real) {
-	C.dJointSetPUAnchorOffset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z),
-		C.dReal(dx), C.dReal(dy), C.dReal(dz))
+func (j *Joint) SetPUAnchorOffset(anchor, delta Vector3) {
+	C.dJointSetPUAnchorOffset(j.CID(),
+		C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]),
+		C.dReal(delta[0]), C.dReal(delta[1]), C.dReal(delta[2]))
 }
 
 /**
@@ -2259,8 +2260,8 @@ func (j *Joint) SetPUAnchorOffset(x, y, z, dx, dy, dz Real) {
  * @ingroup joints
  */
 
-func (j *Joint) SetPUAxis1(x, y, z Real) {
-	C.dJointSetPUAxis1(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPUAxis1(axis Vector3) {
+	C.dJointSetPUAxis1(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2268,8 +2269,8 @@ func (j *Joint) SetPUAxis1(x, y, z Real) {
  * @ingroup joints
  */
 
-func (j *Joint) SetPUAxis2(x, y, z Real) {
-	C.dJointSetPUAxis2(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPUAxis2(axis Vector3) {
+	C.dJointSetPUAxis2(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2277,8 +2278,8 @@ func (j *Joint) SetPUAxis2(x, y, z Real) {
  * @ingroup joints
  */
 
-func (j *Joint) SetPUAxis3(x, y, z Real) {
-	C.dJointSetPUAxis3(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPUAxis3(axis Vector3) {
+	C.dJointSetPUAxis3(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2288,8 +2289,8 @@ func (j *Joint) SetPUAxis3(x, y, z Real) {
  *       dJointSetPUAxis3
  */
 
-func (j *Joint) SetPUAxisP(x, y, z Real) {
-	C.dJointSetPUAxisP(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPUAxisP(axis Vector3) {
+	C.dJointSetPUAxisP(j.CID(), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**
@@ -2324,8 +2325,8 @@ func (j *Joint) AddPUTorque(torque Real) {
  * @brief set the joint anchor
  * @ingroup joints
  */
-func (j *Joint) SetPistonAnchor(x, y, z Real) {
-	C.dJointSetPistonAnchor(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPistonAnchor(anchor Vector3) {
+	C.dJointSetPistonAnchor(j.CID(), C.dReal(anchor[0]), C.dReal(anchor[1]), C.dReal(anchor[2]))
 }
 
 /**
@@ -2357,17 +2358,18 @@ func (j *Joint) SetPistonAnchor(x, y, z Real) {
  * @param dx A delta to be substracted to the Z position as if the anchor was set
  *           when body1 was at current_position[Z] - dz
  */
-func (j *Joint) SetPistonAnchorOffset(x, y, z, dx, dy, dz Real) {
-	C.dJointSetPistonAnchorOffset(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z),
-		C.dReal(dx), C.dReal(dy), C.dReal(dz))
+func (j *Joint) SetPistonAnchorOffset(pos, delta Vector3) {
+	C.dJointSetPistonAnchorOffset(j.CID(),
+		C.dReal(pos[0]), C.dReal(pos[1]), C.dReal(pos[2]),
+		C.dReal(delta[0]), C.dReal(delta[1]), C.dReal(delta[2]))
 }
 
 /**
     * @brief set the joint axis
   * @ingroup joints
 */
-func (j *Joint) SetPistonAxis(x, y, z Real) {
-	C.dJointSetPistonAxis(j.CID(), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetPistonAxis(v Vector3) {
+	C.dJointSetPistonAxis(j.CID(), C.dReal(v[0]), C.dReal(v[1]), C.dReal(v[2]))
 }
 
 /**
@@ -2422,9 +2424,9 @@ func (j *Joint) SetAMotorNumAxes(num int) {
  * @brief set axis
  * @ingroup joints
  */
-func (j *Joint) SetAMotorAxis(anum, rel int, x, y, z Real) {
+func (j *Joint) SetAMotorAxis(anum, rel int, v Vector3) {
 	C.dJointSetAMotorAxis(j.CID(), C.int(anum), C.int(rel),
-		C.dReal(x), C.dReal(y), C.dReal(z))
+		C.dReal(v[0]), C.dReal(v[1]), C.dReal(v[2]))
 }
 
 /**
@@ -2489,8 +2491,8 @@ func (j *Joint) dJointSetLMotorNumAxes(num int) {
  * regardless of the setting of rel.
  * @ingroup joints
  */
-func (j *Joint) SetLMotorAxis(anum, rel int, x, y, z Real) {
-	C.dJointSetLMotorAxis(j.CID(), C.int(anum), C.int(rel), C.dReal(x), C.dReal(y), C.dReal(z))
+func (j *Joint) SetLMotorAxis(anum, rel int, axis Vector3) {
+	C.dJointSetLMotorAxis(j.CID(), C.int(anum), C.int(rel), C.dReal(axis[0]), C.dReal(axis[1]), C.dReal(axis[2]))
 }
 
 /**

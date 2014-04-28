@@ -68,8 +68,8 @@ func (m *Mass) Adjust(newmass Real) {
 	C.dMassAdjust((*C.dMass)(m), C.dReal(newmass))
 }
 
-func (m *Mass) Translate(x, y, z Real) {
-	C.dMassTranslate((*C.dMass)(m), C.dReal(x), C.dReal(y), C.dReal(z))
+func (m *Mass) Translate(v Vector3) {
+	C.dMassTranslate((*C.dMass)(m), C.dReal(v[0]), C.dReal(v[1]), C.dReal(v[2]))
 }
 
 func (m *Mass) Rotate(R *Matrix3) {
