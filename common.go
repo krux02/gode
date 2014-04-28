@@ -1,7 +1,6 @@
 package ode
 
 /*
-#cgo linux LDFLAGS: -lode -lstdc++
 #define dDOUBLE
 #include "ode/common.h"
 */
@@ -11,6 +10,7 @@ import (
 	"unsafe"
 )
 
+/*
 type Real C.dReal
 
 type Vector3 C.dVector3
@@ -19,6 +19,7 @@ type Matrix3 C.dMatrix3
 type Matrix4 C.dMatrix4
 type Matrix6 C.dMatrix6
 type Quaternion C.dQuaternion
+*/
 
 type World C.struct_dxWorld
 type Space C.struct_dxSpace
@@ -26,6 +27,15 @@ type Body C.struct_dxBody
 type Geom C.struct_dxGeom
 type Joint C.struct_dxJoint
 type JointGroup C.struct_dxJointGroup
+
+// cgo -godefs=true typedefs.go
+type Real float64
+type Vector3 [4]float64
+type Vector4 [4]float64
+type Matrix3 [12]float64
+type Matrix4 [16]float64
+type Matrix6 [48]float64
+type Quaternion [4]float64
 
 func toBool(i C.int) bool {
 	return i != 0

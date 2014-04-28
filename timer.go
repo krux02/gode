@@ -1,7 +1,6 @@
 package ode
 
 /*
-#cgo linux LDFLAGS: -lode -lstdc++
 #include "ode/timer.h"
 */
 import "C"

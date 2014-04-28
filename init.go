@@ -1,7 +1,6 @@
 package ode
 
 /*
-#cgo linux LDFLAGS: -lode -lstdc++
 #define dDOUBLE
 #include "ode/odeinit.h"
 */
@@ -31,7 +30,7 @@ func Init2(initFlags InitFlags) bool {
 	}
 }
 
-func AllocateDataForThread(flags AllocateDataFlags){
+func AllocateDataForThread(flags AllocateDataFlags) {
 	C.dAllocateODEDataForThread(C.uint(flags))
 }
 
