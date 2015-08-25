@@ -145,11 +145,11 @@ type JointFeedback struct {
  * when the ODE step function updates the body state.
  */
 func (this *Geom) GeomMoved() {
-	C.dGeomMoved(C.dGeomID((*C.struct_dxWorld)(this)))
+	C.dGeomMoved(C.dGeomID((*C.struct_dxGeom)(this)))
 }
 
 func (this *Geom) GetNextBody() (next *Geom) {
-	return (*Geom)((*C.struct_dxWorld)(C.dGeomGetBodyNext(C.dGeomID((*C.struct_dxWorld)(this)))))
+	return (*Geom)((*C.struct_dxGeom)(C.dGeomGetBodyNext(C.dGeomID((*C.struct_dxGeom)(this)))))
 }
 
 func GetConfiguration() string {

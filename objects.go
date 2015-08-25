@@ -1336,7 +1336,7 @@ func (b *Body) SetMovedCallback(callback func(*Body)) {
  * @ingroup bodies
  */
 func (b *Body) GetFirstGeom() *Geom {
-	return (*Geom)((*C.struct_dxWorld)(C.dBodyGetFirstGeom(b.CID())))
+	return (*Geom)((*C.struct_dxGeom)(C.dBodyGetFirstGeom(b.CID())))
 }
 
 /**
@@ -1628,7 +1628,7 @@ func (jg *JointGroup) CreateUniversal(w *World) *Joint {
  * If it is nonzero the joint is allocated in the given joint group.
  */
 func (jg *JointGroup) CreatePR(w *World) *Joint {
-	return JointPtr(C.dJointCreatePR(w.CID(), w.CID()))
+	return JointPtr(C.dJointCreatePR(w.CID(), jg.CID()))
 }
 
 /**
